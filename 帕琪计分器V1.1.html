@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帕琪计分器</title>
+    <style>
+        body {
+            font-family: Source Han Serif, sans-serif;
+            margin: 20px;
+        }
+
+        #user-input, #user-options, #score-container {
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        .layer {
+            margin-bottom: 20px;
+        }
+
+        .layer-content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .layer-content div {
+            width: 45%;
+            margin-bottom: 10px;
+        }
+        h4{
+            color:blueviolet;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!--思源宋体调用，为了让网站有粥味-->
+    <link rel="stylesheet" href="https://font.sec.miui.com/font/css?family=Source_Han_Serif:400,600:Source_Han_Serif" />
+</head>
+<body>
+    <h1>帕琪计分器（荆楚歌Ver），算完请刷新网页，暂时不支持蓝图</h1>
+    <h2>若无额外加分，请任意添加一个加分项再取消然后才能计算</h2>
+    <div id="user-input">
+        <label for="username">用户名称：</label>
+        <input type="text" id="username">
+        <label for="usermodel">使用分队：</label>
+        <input type="text" id="usermodel">
+    </div>
+    <div class="layer" id="第三层">
+        <h2>第三层</h2>
+        <div class="layer-content">
+            <div>
+                <label>溃乱魔典：</label>
+                <span id="score-1-1">0</span>
+                <span id="display-1-1">0</span>
+                <button onclick="adjustLayerScore(1, 1, 30)">+</button>
+                <button onclick="adjustLayerScore(1, 1, -30)">-</button>
+            </div>
+            <div>
+                <label>大棋一盘：</label>
+                <span id="score-1-2">0</span>
+                <span id="display-1-2">0</span>
+                <button onclick="adjustLayerScore(1, 2, 20)">+</button>
+                <button onclick="adjustLayerScore(1, 2, -20)">-</button>
+            </div>
+            <div>
+                <label>大棋一盘（苦难）：</label>
+                <span id="score-1-3">0</span>
+                <span id="display-1-3">0</span>
+                <button onclick="adjustLayerScore(1, 3, 40)">+</button>
+                <button onclick="adjustLayerScore(1, 3, -40)">-</button>
+            </div>
+            <div>
+                <label>普通boss战：</label>
+                <span id="score-1-4">0</span>
+                <span id="display-1-4">0</span>
+                <button onclick="adjustLayerScore(1, 4, 30)">+</button>
+                <button onclick="adjustLayerScore(1, 4, -30)">-</button>
+            </div>
+            <div>
+                <label>紧急boss战：</label>
+                <span id="score-1-5">0</span>
+                <span id="display-1-5">0</span>
+                <button onclick="adjustLayerScore(1, 5, 60)">+</button>
+                <button onclick="adjustLayerScore(1, 5, -60)">-</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="layer" id="第四层">
+        <h2>第四层</h2>
+        <div class="layer-content">
+            <div>
+                <label>猩红甬道,朽败考察（金融/魔王）：</label>
+                <span id="score-2-1">0</span>
+                <span id="display-2-1">0</span>
+                <button onclick="adjustLayerScore(2, 1, 40)">+</button>
+                <button onclick="adjustLayerScore(2, 1, -40)">-</button>
+            </div>
+            <div>
+                <label>猩红甬道（天灾/苦难/金融）：</label>
+                <span id="score-2-2">0</span>
+                <span id="display-2-2">0</span>
+                <button onclick="adjustLayerScore(2, 2, 60)">+</button>
+                <button onclick="adjustLayerScore(2, 2, -60)">-</button>
+            </div>
+            <div>
+                <label>假象对冲：</label>
+                <span id="score-2-3">0</span>
+                <span id="display-2-3">0</span>
+                <button onclick="adjustLayerScore(2, 3, 30)">+</button>
+                <button onclick="adjustLayerScore(2, 3, -30)">-</button>
+            </div>
+            <div>
+                <label>假象对冲（奇观/魔王）：</label>
+                <span id="score-2-4">0</span>
+                <span id="display-2-4">0</span>
+                <button onclick="adjustLayerScore(2, 4, 50)">+</button>
+                <button onclick="adjustLayerScore(2, 4, -50)">-</button>
+            </div>
+            <div>
+                <label>朽败考察，年代断层（魔王/天灾/金融）：</label>
+                <span id="score-2-5">0</span>
+                <span id="display-2-5">0</span>
+                <button onclick="adjustLayerScore(2, 5, 20)">+</button>
+                <button onclick="adjustLayerScore(2, 5, -20)">-</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="layer" id="第五层">
+        <h2>第五层</h2>
+        <div class="layer-content">
+            <div>
+                <label>计划耕种（苦难/奇观）：</label>
+                <span id="score-3-1">0</span>
+                <span id="display-3-1">0</span>
+                <button onclick="adjustLayerScore(3, 1, 90)">+</button>
+                <button onclick="adjustLayerScore(3, 1, -90)">-</button>
+            </div>
+            <div>
+                <label>计划耕种，寄人城池下（金融/奇观）：</label>
+                <span id="score-3-2">0</span>
+                <span id="display-3-2">0</span>
+                <button onclick="adjustLayerScore(3, 2, 70)">+</button>
+                <button onclick="adjustLayerScore(3, 2, -70)">-</button>
+            </div>
+            <div>
+                <label>通道封锁（奇观），无罪净土（奇观），巫咒同盟（奇观），寄人城池下：</label>
+                <span id="score-3-3">0</span>
+                <span id="display-3-3">0</span>
+                <button onclick="adjustLayerScore(3, 3, 50)">+</button>
+                <button onclick="adjustLayerScore(3, 3, -50)">-</button>
+            </div>
+            <div>
+                <label>通道封锁，无罪净土，巫咒同盟：</label>
+                <span id="score-3-4">0</span>
+                <span id="display-3-4">0</span>
+                <button onclick="adjustLayerScore(3, 4, 30)">+</button>
+                <button onclick="adjustLayerScore(3, 4, -30)">-</button>
+            </div>
+            <div>
+                <label>残损学院：</label>
+                <span id="score-3-5">0</span>
+                <span id="display-3-5">0</span>
+                <button onclick="adjustLayerScore(3, 5, 20)">+</button>
+                <button onclick="adjustLayerScore(3, 5, -20)">-</button>
+            </div>
+            <div>
+                <label>一结局（混乱）：</label>
+                <span id="score-3-6">0</span>
+                <span id="display-3-6">0</span>
+                <button onclick="adjustLayerScore(3, 6, 20)">+</button>
+                <button onclick="adjustLayerScore(3, 6, -20)">-</button>
+            </div>
+            <div>
+                <label>一结局（混乱无漏）</label>
+                <span id="score-3-7">0</span>
+                <span id="display-3-7">0</span>
+                <button onclick="adjustLayerScore(3, 7, 50)">+</button>
+                <button onclick="adjustLayerScore(3, 7, -50)">-</button>
+            </div>
+            <div>
+                <label>二结局非混乱通过</label>
+                <span id="score-3-8">0</span>
+                <span id="display-3-8">0</span>
+                <button onclick="adjustLayerScore(3, 8, 120)">+</button>
+                <button onclick="adjustLayerScore(3, 8, -120)">-</button>
+            </div>
+            <div>
+                <label>二结局出现：金融/奇观/拥挤|混乱漏怪|持有巴别塔誓言（每满足一项点一次）</label>
+                <span id="score-3-9">0</span>
+                <span id="display-3-9">0</span>
+                <button onclick="adjustLayerScore(3, 9, 20)">+</button>
+                <button onclick="adjustLayerScore(3, 9, -20)">-</button>
+            </div>
+            <div>
+                <label>二结局混乱无漏</label>
+                <span id="score-3-10">0</span>
+                <span id="display-3-10">0</span>
+                <button onclick="adjustLayerScore(3, 10, 170)">+</button>
+                <button onclick="adjustLayerScore(3, 10, -170)">-</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="layer" id="第六层">
+        <h2>第六层</h2>
+        <div class="layer-content">
+            <div>
+                <label>神圣的渴求：</label>
+                <span id="score-4-1">0</span>
+                <span id="display-4-1">0</span>
+                <button onclick="adjustLayerScore(4, 1, 40)">+</button>
+                <button onclick="adjustLayerScore(4, 1, -40)">-</button>
+            </div>
+            <div>
+                <label>谋求共识：</label>
+                <span id="score-4-2">0</span>
+                <span id="display-4-2">0</span>
+                <button onclick="adjustLayerScore(4, 2, 70)">+</button>
+                <button onclick="adjustLayerScore(4, 2, -70)">-</button>
+            </div>
+             <div>
+                <label>神圣的渴求（奇观/天灾）：</label>
+                <span id="score-4-3">0</span>
+                <span id="display-4-3">0</span>
+                <button onclick="adjustLayerScore(4, 3, 60)">+</button>
+                <button onclick="adjustLayerScore(4, 3, -60)">-</button>
+            </div>
+            <div>
+                <label>谋求共识（金融/奇观）：</label>
+                <span id="score-4-4">0</span>
+                <span id="display-4-4">0</span>
+                <button onclick="adjustLayerScore(4, 4, 90)">+</button>
+                <button onclick="adjustLayerScore(4, 4, -90)">-</button>
+            </div>
+            <div>
+                <label>三结局仅通过：</label>
+                <span id="score-4-5">0</span>
+                <span id="display-4-5">0</span>
+                <button onclick="adjustLayerScore(4, 5, 170)">+</button>
+                <button onclick="adjustLayerScore(4, 5, -170)">-</button>
+            </div>
+            <div>
+                <label>三结局出现奇观/拥挤/魔王|混乱无漏通关（每满足一项点一次）：</label>
+                <span id="score-4-6">0</span>
+                <span id="display-4-6">0</span>
+                <button onclick="adjustLayerScore(4, 6, 50)">+</button>
+                <button onclick="adjustLayerScore(4, 6, -50)">-</button>
+            </div>
+            <div>
+                <label>三结局出现混乱且漏怪通关：</label>
+                <span id="score-4-7">0</span>
+                <span id="display-4-7">0</span>
+                <button onclick="adjustLayerScore(4, 7, 30)">+</button>
+                <button onclick="adjustLayerScore(4, 7, -30)">-</button>
+            </div>
+        </div>
+    </div>
+    <div class="layer" id="特殊关卡">
+        <h2>特殊关卡</h2>
+        <div class="layer-content">
+            <div>
+                <label>信号灯无漏/劫虚济实无漏（紧急按两下）：</label>
+                <span id="score-6-1">0</span>
+                <span id="display-6-1">0</span>
+                <button onclick="adjustLayerScore(6, 1, 25)">+</button>
+                <button onclick="adjustLayerScore(6, 1, -25)">-</button>
+            </div>
+            <div>
+                <label>战场侧面（紧急按两下）：</label>
+                <span id="score-6-2">0</span>
+                <span id="display-6-2">0</span>
+                <button onclick="adjustLayerScore(6, 2, 20)">+</button>
+                <button onclick="adjustLayerScore(6, 2, -20)">-</button>
+            </div>
+            <div>
+                <label>紧急鸭速公路隐藏怪（收一只按一下）：</label>
+                <span id="score-6-3">0</span>
+                <span id="display-6-3">0</span>
+                <button onclick="adjustLayerScore(6, 3, 20)">+</button>
+                <button onclick="adjustLayerScore(6, 3, -20)">-</button>
+            </div>
+            <div>
+                <label>紧急鸭速公路无漏/叙事邀约无漏：</label>
+                <span id="score-6-4">0</span>
+                <span id="display-6-4">0</span>
+                <button onclick="adjustLayerScore(6, 4, 40)">+</button>
+                <button onclick="adjustLayerScore(6, 4, -40)">-</button>
+            </div>
+            <div>
+                <label>狭路相逢三级（使用未使用过干员一次）：</label>
+                <span id="score-6-5">0</span>
+                <span id="display-6-5">0</span>
+                <button onclick="adjustLayerScore(6, 5, 10)">+</button>
+                <button onclick="adjustLayerScore(6, 5, -10)">-</button>
+            </div>
+        </div>
+    </div>
+    <div class="layer" id="特殊加分">
+        <h2>特殊加分</h2>
+        <div class="layer-content">
+            <div>
+                <label>鸭/熊/狗/鼠：</label>
+                <span id="score-5-1">0</span>
+                <span id="display-5-1">0</span>
+                <button onclick="adjustLayerScore(5, 1, 10)">+</button>
+                <button onclick="adjustLayerScore(5, 1, -10)">-</button>
+            </div>
+            <div>
+                <label>临时招募（四星）：</label>
+                <span id="score-5-2">0</span>
+                <span id="display-5-2">0</span>
+                <button onclick="adjustLayerScore(5, 2, 10)">+</button>
+                <button onclick="adjustLayerScore(5, 2, -10)">-</button>
+            </div>
+            <div>
+                <label>临时招募（五星）：</label>
+                <span id="score-5-3">0</span>
+                <span id="display-5-3">0</span>
+                <button onclick="adjustLayerScore(5, 3, 20)">+</button>
+                <button onclick="adjustLayerScore(5, 3, -20)">-</button>
+            </div>
+            <div>
+                <label>临时招募（六星）：</label>
+                <span id="score-5-4">0</span>
+                <span id="display-5-4">0</span>
+                <button onclick="adjustLayerScore(5, 4, 50)">+</button>
+                <button onclick="adjustLayerScore(5, 4, -50)">-</button>
+            </div>
+            <div>
+                <label>跨层紧急（有几个树洞藏品一关按几次）：</label>
+                <span id="score-5-5">0</span>
+                <span id="display-5-5">0</span>
+                <button onclick="adjustLayerScore(5, 5, 20)">+</button>
+                <button onclick="adjustLayerScore(5, 5, -20)">-</button>
+            </div>
+            <div>
+                <label>四层及以上部署不多于4且通过紧急：</label>
+                <span id="score-5-6">0</span>
+                <span id="display-5-6">0</span>
+                <button onclick="adjustLayerScore(5, 6, 15)">+</button>
+                <button onclick="adjustLayerScore(5, 6, -15)">-</button>
+            </div>
+        </div>
+    </div>
+    <div id="collection">
+        <h2>收藏品数量</h2>
+        <label for="collection-amount">输入收藏品数量：</label>
+        <input type="number" id="collection-amount" value="0">
+        <button onclick="updateCollectionScore()">确认输入</button>
+    </div>
+    <div id="money">
+        <h2>取钱数量</h2>
+        <label for="money-get">输入取钱数量：</label>
+        <input type="number" id="money-get" value="0">
+        <button onclick="moneyGet()">确认输入</button>
+    </div>
+
+    <div class="layer" id="ban">
+        <h2>选手ban位</h2>
+        <div id="user-options">
+            <label>是否招募益达：</label>
+            <select id="option-select">
+                <option value="no">否，我玩游戏要脑子！</option>
+                <option value="yes">是，我目光呆滞！</option>
+            </select>
+            <button onclick="calculateFinalScore()">应用</button>
+        </div>
+        <div class="layer-content">
+            <div>
+                <label>5%权重ban位（logos，夜刀，傀影，阿斯卡纶）：</label>
+                <span id="weight-99-1">0</span>
+                <span id="display-99-1">0</span>
+                <button onclick="adjustLayerWeight(99, 1, 5)">+</button>
+                <button onclick="adjustLayerWeight(99, 1, -5)">-</button>
+            </div>
+            <div>
+                <label>3%权重ban位（纯艾，塑心，凯尔希，伊内丝，乌尔比安，妮芙）：</label>
+                <span id="weight-99-2">0</span>
+                <span id="display-99-2">0</span>
+                <button onclick="adjustLayerWeight(99, 2, 3)">+</button>
+                <button onclick="adjustLayerWeight(99, 2, -3)">-</button>
+            </div>
+            <div>
+                <label>博士银印临时招募维什戴尔：</label>
+                <span id="weight-99-3">0</span>
+                <span id="display-99-3">0</span>
+                <button onclick="adjustLayerWeight(99, 3, 7.11)">+</button>
+                <button onclick="adjustLayerWeight(99, 3, -7.11)">-</button>
+            </div>
+        </div>
+    </div>
+    <div id="score-container">
+        <h2>总加分权重：</h2>
+        <p id="total-score">0</p>
+        <label for="initial-score">初始分数：</label>
+        <input type="number" id="initial-score">
+        <label for="extra-score">额外加分：</label>
+        <input type="number" id="extra-score">
+        <button onclick="calculateFinalScore()">计算最终分数</button>
+        <p id="final-score">最终分数：0</p>
+    </div>
+    <button id="save-button" onclick="saveAsImage()">保存结果</button>
+    <script>
+        let weights = {};
+        let scores = {};
+        let addCounts = {}; 
+        let collectionAmount = 0;
+        let countScore=0;
+        let moneyAmount=0;
+        let extraScore=0;
+
+        function adjustLayerWeight(layer, index, change) {
+            if (!weights[layer]) {
+                weights[layer] = {};
+            }
+            if (!weights[layer][index]) {
+                weights[layer][index] = 0;
+            }
+            weights[layer][index] += change;
+            reupdateDisplay(layer, index);
+            calculateTotalScore();
+        }
+        // 加分函数
+        function adjustLayerScore(layer, index, change) {
+        const extraScoreInput = document.getElementById('extra-score');
+        let extraScore = parseInt(extraScoreInput.value) || 0;
+        extraScore += change;
+        extraScoreInput.value = extraScore;
+                if (!scores[layer]) {
+                    scores[layer] = {};
+                }
+                if (!scores[layer][index]) {
+                    scores[layer][index] = 0;
+                }
+                scores[layer][index] += change;
+                updateDisplay(layer, index);
+        }   
+        
+
+        function updateDisplay(layer, index) {
+            const scoreElement=document.getElementById(`score-${layer}-${index}`);
+            const displayElement = document.getElementById(`display-${layer}-${index}`);           
+            scoreElement.textContent=scores[layer][index];
+            displayElement.textContent = scores[layer][index];
+        }
+        function reupdateDisplay(layer,index){
+            const weightElement = document.getElementById(`weight-${layer}-${index}`);
+            const displayElement = document.getElementById(`display-${layer}-${index}`);
+            weightElement.textContent = weights[layer][index];
+            displayElement.textContent = weights[layer][index];
+        }
+        function moneyGet(){
+        moneyAmount = parseFloat(document.getElementById('money-get').value) || 0;
+        if(moneyAmount>60){
+            moneyAmount=moneyAmount-60;
+        }else{
+            moneyAmount=0;
+        }
+    }
+    function applyCustomWeights() {
+            const layer = document.getElementById('custom-layer').value;
+            const weight = parseFloat(document.getElementById('custom-weight').value);
+            if (!weights[layer]) {
+                weights[layer] = {};
+            }
+            for (let index in weights[layer]) {
+                weights[layer][index] = weight;
+                reupdateDisplay(layer, index);
+            }
+            calculateTotalScore();
+            calculateFinalScore();
+        }
+
+        
+
+        function updateCollectionScore() {
+            collectionAmount = parseFloat(document.getElementById('collection-amount').value) || 0;
+        }
+
+        function calculateTotalScore() {
+            let totalScore = 0;
+            for (let layer in weights) {
+                for (let index in weights[layer]) {
+                    totalScore += weights[layer][index];
+                }
+            }
+            const collectionScore =  7.5*collectionAmount;
+            document.getElementById('total-score').textContent = totalScore;
+        }
+        
+        function calculateFinalScore() {
+            const selectedOption = document.getElementById('option-select').value;
+            const initialScore = parseInt(document.getElementById('initial-score').value)+parseInt(document.getElementById('extra-score').value) || 0;
+            let totalWeight = 0;
+            let finalScore=0;
+            for (const layer in weights) {
+                for (const index in weights[layer]) {
+                    totalWeight += weights[layer][index];
+                }
+            }
+            const collectionScore = 7.5*collectionAmount;
+            const moneyScore=50*moneyAmount;
+            const countScore = (initialScore+collectionScore-moneyScore) * (1 + totalWeight * 0.01);
+            if (selectedOption == 'yes') {
+                finalScore = 0.8*countScore;
+            }else{
+                finalScore=countScore;
+            }
+            document.getElementById('final-score').textContent = `最终分数：${finalScore.toFixed(2)}`;
+        }
+    function saveAsImage() {
+            html2canvas(document.body).then(canvas => {
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/jpeg');
+                link.download = 'webpage-screenshot.jpg';
+                link.click();
+            });
+        }
+    </script>
+    <h4>Designed By 帕琪 From CUG 艰苦朴素 求真务实</h4>
+</body>
+</html>
