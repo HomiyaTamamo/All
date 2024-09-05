@@ -1,0 +1,2 @@
+# All
+Arknights Jingchuge calculator
